@@ -27,9 +27,10 @@ include('header.php');
                                 $restaurant_table_size = $_GET['restaurantTableSize'];
                                 $restaurant_city = $_GET['restaurantCity'];
                                 //restaurant date & time
+                                $uppercase_restaurant_city = strtoupper($restaurant_city);
                                 $check_restaurant_query=mysqli_query($conn, "SELECT * FROM `restaurants`
                                                                                 INNER JOIN `restaurant_tables` ON restaurants.Restaurant_ID=restaurant_tables.Restaurant_ID 
-                                                                                  WHERE Table_Size='$restaurant_table_size' AND restaurants.City='$restaurant_city' AND Availability=1");
+                                                                                  WHERE Table_Size='$restaurant_table_size' AND UPPER(restaurants.City)='$uppercase_restaurant_city' AND Availability=1");
 
                                 if(mysqli_num_rows($check_restaurant_query)>0){
                                     echo "found rows";
