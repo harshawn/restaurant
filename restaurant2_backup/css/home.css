@@ -13,8 +13,8 @@ body {
     /*  background-image: url('../img/background.png');
       background-repeat: repeat-x;
     background-image: linear-gradient(to bottom, #f4a1a1 50%, #e6e6e6 50%);
-    background-size: cover;
- background-repeat: no-repeat; */
+    background-size: cover; */
+    background-repeat: no-repeat;
 }
 
 .container {

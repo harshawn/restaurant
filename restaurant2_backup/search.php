@@ -1,4 +1,5 @@
 <?php
+$page_css = "search";
 include('header.php');
 ?>
 
@@ -36,7 +37,9 @@ include('header.php');
                                     echo "found rows";
                                     while($check_restaurant_array = mysqli_fetch_array($check_restaurant_query)){
                                         $restaurant_name = $check_restaurant_array['Restaurant_Name'];
+                                        $restaurant_id = $check_restaurant_array['RestaurantTable_ID'];
                                         echo "<h1>restaurant name:". $restaurant_name ."</h1>";
+                                        echo "<input type='submit' name='selected_restaurant' value='Select' id='.$restaurant_id.'>";
                                     }
                                 }
                                 else {
@@ -51,58 +54,6 @@ include('header.php');
 
                         ?>
 
-                        <?php
-
-
-
-                        /*
-                            if(isset ($_POST['restaurantTableSize' && 'restaurantCity'])){
-                                echo 'Restaurant Table Size:'.$_POST["restaurantTableSize"]; 
-                                echo 'Restaurant City:'.$_POST["restaurantCity"]; 
-                            }
-                            else {
-                                echo 'No Available Tables for Restaurants in requested City';
-                            }
-                        $restaurant_table_size = $_POST['restaurantTableSize'];
-                        $restaurant_city = "Coventry";
-
-                        $check_restaurant_query= "SELECT * FROM restaurant_tables WHERE Table_Size=`'.$restaurant_table_size.'` "
-                            . "AND restaurant_tables.Restuarant_ID=restaurants.Restuarant_ID AND restaurants.City='$restaurant_city'"
-                            . "AND availability=1";
-
-                        $check_restaurant_result = mysqli_query($conn, $check_restaurant_query);
-
-
-                        //       $check_restaurant_array = mysqli_fetch_array($check_restaurant_query);
-
-                        if($check_restaurant_result){
-                            while($check_restaurant_row = mysqli_fetch_assoc($check_restaurant_result)) {
-                                $restaurant_city = $check_restaurant_row["City"];
-                                $restaurant_table_size= $check_restaurant_row["Table_Size"];
-
-                                echo "Restaurant City". $restaurant_city;
-                                echo "Restaurant Table Size". $restaurant_table_size;
-                            }
-
-                        }
-                        else {
-                            echo "nothing in array, 0 rows";
-                        }
-
-                        //if(isset ($_SESSION['restaurantTableSize'])){// && ($_SESSION['restaurantCity'])){
-
-                        // THIS WORKS ON ITS OWN -----------------------------------------================-->      echo 'Restaurant Table Size:'.$_POST["restaurantTableSize"];
-                        // echo 'Restaurant City:'.$_POST["restaurantCity"];
-                        // }
-                        //  else {
-                        // echo 'No Available Tables for Restaurants in requested City';
-                        // }
-                        ?>
-                        
-                        <!--Restaurant Table Size: <? echo $_POST["restaurantTableSize"]; ?><br>
-                        Restaurant City: <? echo $_POST["restaurantCity"]; ?>-->
-                       */
-                        ?>
                     </p>
                 </div>
         
@@ -111,46 +62,3 @@ include('header.php');
 <?php
 include('footer.php');
 ?>
-
-
-<?php
-/*
-THIS WAS AT THE TOP
-if(isset ($_POST['restaurantTableSize'])){
-    echo"RECEIVED RESTAURANT TABLE";// AND CITY";
- //   $_SESSION['restaurantTableSize'] = $_POST['restaurantTableSize'];
-    // $_SESSION['restaurantCity'] = $_POST['restaurantCity'];
-  //  foreach($_SESSION['restaurantTableSize'] as $variable)
-   // { // and print out the values
-    //    echo 'The value of $_SESSION['."'".$variable."'".'] is '."'".$variable."'".' <br />';
-   // }
-    foreach($_SESSION["capacity"] as $key=>$value){
-
-        echo 'The value of $_SESSION['."'".$key."'".'] is '."'".$value."'".' <br />';
-    }
-}
-else {
-    echo"DID NOT RECEIVE ANYTHING!!!!!!!!!!!!!!!";
-    echo 'No Available Tables for Restaurants in requested City';
-}
-*/
-?>
-
-<?php
-/*
-        if(mysqli_num_rows($check_restaurant_query) > 0) {  
-            echo "<script>window.open('search.php','_self')</script>";
-            while($check_restaurant_array = mysqli_fetch_array($check_restaurant_query)){
-                
-            }
-             
-          //  $_SESSION['customerEmail']=$customer_email;//here session is used and value of $user_email store in $_SESSION.  
-            $_SESSION['restaurantTableSize']=$restaurant_table_size;
-            $_SESSION['restaurantCity']=$restaurant_city;
-        }  
-        else {  
-          echo "<script>alert('No tables available. Please enter search criteria')</script>";  
-        }  
-    }
- * */
-

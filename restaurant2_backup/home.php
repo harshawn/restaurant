@@ -1,12 +1,9 @@
 <?php
+$page_css = "home";
 require_once('header.php');
 ?>
 
-<link rel="stylesheet" href="css/home.css">
-
-<body>
-
-    <h1 id="home_header">Restaurant Reservation System</h1>
+<h1 id="home_header">Restaurant Reservation System</h1>
 
     <div class="container">
 
@@ -37,16 +34,10 @@ require_once('header.php');
             </div>
 
             <h3>For this date and time:</h3>
-                <!--div class='input-group date' id='datetimepicker1'>
+                <div class='input-group date' id='datetimepicker'>
                     <input type='text' class="form-control" name="restaurantDateTime"/>
                     <span class="input-group-addon"><span class="glyphicon glyphicon-calendar"></span></span>
-                </div-->
-
-            <div class="input-append date form_datetime">
-                <input size="16" type="text" value="" readonly>
-                <span class="add-on"><i class="icon-th"></i></span>
-            </div>
-
+                </div>
 
 
             <button class="btn btn-default" type="submit" name="Go">GO!<i class="glyphicon glyphicon-search"></i></button>
@@ -67,9 +58,6 @@ require_once('header.php');
         });
     });
 
-    $(".form_datetime").datetimepicker({
-        format: "dd MM yyyy - hh:ii"
-    });
 </script>
 
 
