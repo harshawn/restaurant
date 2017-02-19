@@ -1,13 +1,10 @@
 <?php
-include('header.php');
+$page_css = "customerLogin";
+require_once('header.php');
 /* USED THIS AS HELP ::::::::::::::::::::::::::::::::::::::::::::<<<<<<<<<<<<
  * http://www.c-sharpcorner.com/uploadfile/9582c9/script-for-login-logout-and-view-using-php-mysql-and-boots/
  */
 ?>
-
-<link rel="stylesheet" href="css/customerLogin.css">
-    
-    <body>
         
         <div class="container">
             <h1>Customer Login</h1>
@@ -18,7 +15,7 @@ include('header.php');
                     <br>
                     <input type="text" name="customerPassword" class="form-control input-sm chat-input" placeholder="Password">
                     <br>
-                    <input type="submit" name="Login" value="Login">
+                    <input type="submit" name="Login" value="Login"> <input type="submit" name="customerRegister" value="Register">
                     <br><br>
                 </form>
             </div>
@@ -37,7 +34,7 @@ include('footer.php');
         $customer_email=$_POST['customerEmail'];  
         $customer_pass=$_POST['customerPassword'];  
 
-        $check_customer="SELECT * FROM customers WHERE customer_email='$customer_email'AND customer_password='$customer_pass'";  
+        $check_customer="SELECT * FROM `customers` WHERE customer_email='$customer_email'AND customer_password='$customer_pass'";
 
         $run=mysqli_query($conn,$check_customer);  
 
@@ -48,5 +45,9 @@ include('footer.php');
         else {  
           echo "<script>alert('Email or password is incorrect!')</script>";  
         }  
-    }  
+    }
+
+    if(isset($_POST['customerRegister'])){
+        echo "<script>window.open('customerRegistration.php','_self')</script>";
+    }
 ?>

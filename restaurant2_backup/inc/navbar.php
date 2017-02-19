@@ -15,7 +15,7 @@
     <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
         <ul class="nav navbar-nav">
             <li><a id="page-links" href="home.php">Home</a></li>
-            <li><a id="page-links" href="restaurantsLogin.php">Restaurants</a></li>
+            <li><a id="page-links" href="restaurantsLogin.php">Owner Login</a></li>
             <li><a id="page-links" href="search.php">SEARCH</a></li>
             <li><a id="page-links" href="customerLogin.php">Customer Login</a></li>
             <li><a id="page-links" href="help.php">Help</a></li>

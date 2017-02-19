@@ -1,8 +1,7 @@
 <?php
+$page_css = "help";
 include('header.php');
 ?>
-
-<link rel="stylesheet" href="css/restaurantsLogin.css">
 
     <body>
 
