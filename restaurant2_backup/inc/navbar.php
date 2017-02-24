@@ -17,8 +17,24 @@
             <li><a id="page-links" href="home.php">Home</a></li>
             <li><a id="page-links" href="restaurantsLogin.php">Owner Login</a></li>
             <li><a id="page-links" href="search.php">SEARCH</a></li>
-            <li><a id="page-links" href="customerLogin.php">Customer Login</a></li>
+            <!-- <li><a id="page-links" href="customerLogin.php">Customer Login</a></li> -->
             <li><a id="page-links" href="help.php">Help</a></li>
+
+            <?php
+            if(isset($_SESSION['customerEmail'])){
+                $customer_email=$_SESSION['customerEmail'];
+                $check_customer="SELECT customer_firstname FROM `customers` WHERE customer_email='$customer_email'";
+                $run=mysqli_query($conn,$check_customer);
+                $run_array = mysqli_fetch_array($run);
+                $customer_name = $run_array['customer_firstname'];
+
+                echo "<li><a id='page-links' href='customerViewAccount.php'>View Account</a></li>";
+                echo "<li><a id='page-links' href='customerLogout.php'>Not ".$customer_name."? LOGOUT</a></li>";
+            }
+            else {
+                echo "<li><a id='page-links' href='customerLogin.php'>Customer Login</a></li>";
+            }
+            ?>
 
         </ul>
     </div>

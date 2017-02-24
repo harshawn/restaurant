@@ -39,12 +39,13 @@ include('footer.php');
         $customer_email=$_POST['customerEmail'];
         $customer_pass=$_POST['customerPassword'];  
 
-        $check_email="SELECT * FROM `customers` WHERE customer_email = $customer_email";
+        $check_email="SELECT * FROM `customers` WHERE customer_email='$customer_email'";
 
         $run=mysqli_query($conn,$check_email);
 
         if(mysqli_num_rows($run)>0){
                 echo "<script>alert('Email already in use, select Forgot Password')</script>";
+                echo "<script>window.open('customerRegistration.php','_self')</script>";
         }
 
         else {
@@ -54,8 +55,8 @@ include('footer.php');
             if ($conn->query($add_customer) == TRUE) {
                 echo "<script>alert('New record created successfully')</script>";
 
-                echo "<script>window.open('customerWelcome.php','_self')</script>";
-                $_SESSION['customerEmail']=$customer_email;//here session is used and value of $user_email store in $_SESSION.
+                echo "<script>window.open('customerLogin.php','_self')</script>";
+
             } else {
                 echo "Error: " . $add_customer . "<br>" . $conn->error;
             }
