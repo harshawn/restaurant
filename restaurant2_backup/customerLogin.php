@@ -38,9 +38,9 @@ include('footer.php');
 
         $run=mysqli_query($conn,$check_customer);  
 
-        if(mysqli_num_rows($run)) {  
-            echo "<script>window.open('customerWelcome.php','_self')</script>";  
-            $_SESSION['customerEmail']=$customer_email;//here session is used and value of $user_email store in $_SESSION.  
+        if(mysqli_num_rows($run)) {
+            $_SESSION['customerEmail']=$customer_email;//here session is used and value of $user_email store in $_SESSION.
+            echo "<script>window.open('customerWelcome.php','_self')</script>";
         }  
         else {  
           echo "<script>alert('Email or password is incorrect!')</script>";  

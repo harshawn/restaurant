@@ -31,6 +31,7 @@ require_once('header.php');
                     <?php
                         $display_city_query = mysqli_query($conn, "SELECT city FROM location");
                         if(mysqli_num_rows($display_city_query)>0){
+                            echo "<option>Any</option>";
                             while($display_city_array = mysqli_fetch_array($display_city_query)){
                                 $all_cities = $display_city_array['city'];
                                 echo "<option>". $all_cities ."</option>";
@@ -40,33 +41,47 @@ require_once('header.php');
                 </select>
             </div>
 
-
-            <h3>For this date and time:</h3>
-                <div class='input-group date' id='datetimepicker'>
-                    <input type='text' class="form-control" name="restaurantDateTime"/>
-                    <span class="input-group-addon"><span class="glyphicon glyphicon-calendar"></span></span>
-                </div>
-
-
-            <div class="input-group date">
-                <input type="text" class="form-control"><span class="input-group-addon"><i class="glyphicon glyphicon-calendar"></i></span>
+            <div class="form-group">
+                <h3>Cuisine:</h3>
+                <select class="form-control input-lg" name="restaurantCity" id="sel2">
+                    <?php
+                    $display_cuisine_query = mysqli_query($conn, "SELECT cuisine_name FROM cuisine");
+                    if(mysqli_num_rows($display_cuisine_query)>0){
+                        echo "<option>Any</option>";
+                        while($display_cuisine_array = mysqli_fetch_array($display_cuisine_query)){
+                            $all_cuisines = $display_cuisine_array['cuisine_name'];
+                            echo "<option>". $all_cuisines ."</option>";
+                        }
+                    }
+                    ?>
+                </select>
             </div>
 
 
-            <script>
-                //https://jsfiddle.net/Eonasdan/0Ltv25o8/
-                //https://www.google.co.uk/webhp?sourceid=chrome-instant&ion=1&espv=2&ie=UTF-8#q=datetimepicker+bootstrap+cdn
-                //http://stackoverflow.com/questions/30287973/how-to-use-the-bootstrap-datepicker
-                $('#datetimepicker1').datetimepicker();
-                $('.input-group.date').datepicker({
-                    format: "yyyy/mm/dd",
-                    startDate: "2012-01-01",
-                    endDate: "2015-01-01",
-                    todayBtn: "linked",
-                    autoclose: true,
-                    todayHighlight: true
-                });
-            </script>
+
+
+
+
+            <h3>For this date and time:</h3>
+
+                <div class="col-sm-6" style="height:130px;">
+                    <div class="form-group">
+                        <div class='input-group date' id='datetimepicker11'>
+                            <input type='text' class="form-control" />
+                            <span class="input-group-addon">
+                                <span class="glyphicon glyphicon-calendar">
+                                </span>
+                            </span>
+                        </div>
+                    </div>
+                </div>
+                <script type="text/javascript">
+                    $(function () {
+                        $('#datetimepicker11').datetimepicker({
+                            daysOfWeekDisabled: [0, 6]
+                        });
+                    });
+                </script>
 
             <button class="btn btn-default" type="submit" name="Go">GO!<i class="glyphicon glyphicon-search"></i></button>
 
