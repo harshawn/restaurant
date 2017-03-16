@@ -1,41 +1,18 @@
 <?php
 $page_css = "skip";
 include('header.php');
+
+if(isset($_POST['selected_restaurant_ID'])){
+    $_SESSION['selected_restaurant_ID'] = $_POST['selected_restaurant_ID'];
+}
 ?>
 
-<div>
 
-    <?php
 
-    if(isset($_POST['selected_restaurant'])) {
-        echo "<p>helloooooooooooooooo</p>";
-        $selected_restaurant = $_POST['selected_restaurant'];
-        echo $selected_restaurant;
-    }
-/*
-    $db = new mysqli("address","id","password","DBname");
-    if (mysqli_connect_errno()) {
-        echo "Connection Failed: " . mysqli_connect_errno();
-        exit();
-    }
-
-    $stmt = $db->prepare("INSERT INTO users (name, email, mobile, city, message) VALUES (?, ?, ?, ?, ?)");
-    $stmt -> bind_param('sssss', $fname, $femail, $fmobile, $fcity, $fmessage);
-
-    $fname = $_POST['fname'];
-    $femail = $_POST['femail'];
-    $fmobile = $_POST['fmobile'];
-    $fcity = $_POST['fcity'];
-    $fmessage = $_POST['fmessage'];
-
-    $stmt -> execute();
-    $stmt -> close();
-    $db -> close();
-    }
-        */
-    ?>
-
-</div>
+    <div class="container">
+        <h3>Please <a href="customerLogin.php">CLICK HERE</a> to SIGN IN!</h3> <!--Need to check which page they redirect from, then bring them back after login-->
+        <h3>or <a href="viewTablesAvailable.php">CLICK HERE</a> to SKIP!</h3>
+    </div>
 
 <?php
 include('footer.php');

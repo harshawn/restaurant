@@ -43,7 +43,7 @@ require_once('header.php');
 
             <div class="form-group">
                 <h3>Cuisine:</h3>
-                <select class="form-control input-lg" name="restaurantCity" id="sel2">
+                <select class="form-control input-lg" name="restaurantCuisine" id="sel2">
                     <?php
                     $display_cuisine_query = mysqli_query($conn, "SELECT cuisine_name FROM cuisine");
                     if(mysqli_num_rows($display_cuisine_query)>0){
@@ -57,31 +57,40 @@ require_once('header.php');
                 </select>
             </div>
 
+            <h3>For this date: </h3>
+            <script>
+                $( function() {
+                    $( "#datepicker" ).datepicker();
+                });
+            </script>
+            <p>Date: <input name="searchDate" type="text" id="datepicker"></p>
 
-
-
-
-
-            <h3>For this date and time:</h3>
-
-                <div class="col-sm-6" style="height:130px;">
-                    <div class="form-group">
-                        <div class='input-group date' id='datetimepicker11'>
-                            <input type='text' class="form-control" />
-                            <span class="input-group-addon">
-                                <span class="glyphicon glyphicon-calendar">
-                                </span>
-                            </span>
-                        </div>
-                    </div>
-                </div>
-                <script type="text/javascript">
-                    $(function () {
-                        $('#datetimepicker11').datetimepicker({
-                            daysOfWeekDisabled: [0, 6]
-                        });
+            <!-- http://timepicker.co/
+            https://jqueryui.com/datepicker/ ***************** GO HERE *************************************-->
+            <h3>and Time:</h3>
+            <script>
+                $(document).ready(function(){
+                    $('#timepicker').timepicker({
+                        timeFormat: 'HH:mm', /*timeFormat: 'HH:mm p' <-- the 'p' added AM PM */
+                        interval: 30,
+                        minTime: '9:00am',
+                        maxTime: '10:30pm',
+                        defaultTime: '9:00am',
+                        startTime: '9:00am',
+                        dynamic: false,
+                        dropdown: true,
+                        scrollbar: true
                     });
-                </script>
+                });
+
+                $('.timepicker').timepicker({
+
+                });
+            </script>
+
+            <p>Time: <input name="searchTime" type="text" id="timepicker"></p>
+
+
 
             <button class="btn btn-default" type="submit" name="Go">GO!<i class="glyphicon glyphicon-search"></i></button>
 

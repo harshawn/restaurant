@@ -30,5 +30,9 @@ body{
     margin-right: -0.5em;
 }
 
+.btn-stretch {
+    //color: transparent;
+    width: 250px;
+}
 
 
