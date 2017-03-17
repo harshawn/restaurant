@@ -29,8 +29,7 @@ include('header.php');
 include('footer.php');
 ?>
 
-<?php  
-
+<?php
     if(isset($_POST['customerRegister']))
     {
         $customer_title=$_POST['customerTitle'];
@@ -47,7 +46,6 @@ include('footer.php');
                 echo "<script>alert('Email already in use, select Forgot Password')</script>";
                 echo "<script>window.open('customerRegistration.php','_self')</script>";
         }
-
         else {
             $add_customer = "INSERT INTO customers(customer_title, customer_firstname, customer_lastname, customer_email, customer_password)
                                 VALUES('$customer_title','$customer_firstname','$customer_lastname','$customer_email','$customer_pass')";
@@ -60,7 +58,6 @@ include('footer.php');
             } else {
                 echo "Error: " . $add_customer . "<br>" . $conn->error;
             }
-        }  
-
+        }
     }  
 ?>
