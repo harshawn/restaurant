@@ -27,27 +27,37 @@ require_once('header.php');
 include('footer.php');
 ?>
 
-<?php  
+<?php
 
-    if(isset($_POST['Login']))  
-    {  
-        $customer_email=$_POST['customerEmail'];  
-        $customer_pass=$_POST['customerPassword'];  
+    if (isset($_POST['Login'])) {
 
-        $check_customer="SELECT * FROM `customers` WHERE customer_email='$customer_email'AND customer_password='$customer_pass'";
+        $customer_email = $_POST['customerEmail'];
+        $customer_pass = $_POST['customerPassword'];
 
-        $run=mysqli_query($conn,$check_customer);  
+        $check_customer = "SELECT * FROM `customers` WHERE customer_email='$customer_email'AND customer_password='$customer_pass'";
 
-        if(mysqli_num_rows($run)) {
-            $_SESSION['customerEmail']=$customer_email;//here session is used and value of $user_email store in $_SESSION.
-            echo "<script>window.open('customerWelcome.php','_self')</script>";
-        }  
-        else {  
-          echo "<script>alert('Email or password is incorrect!')</script>";  
-        }  
+        $run = mysqli_query($conn, $check_customer);
+
+        if(isset($_SESSION['selected_restaurant_ID'])) {
+            if (mysqli_num_rows($run)) {
+                $_SESSION['customerEmail'] = $customer_email;//here session is used and value of $user_email store in $_SESSION.
+                echo "<script>window.open('makeReservation.php','_self')</script>";
+            } else {
+                echo "<script>alert('Email or password is incorrect!')</script>";
+            }
+        }
+        else {
+            if (mysqli_num_rows($run)) {
+                $_SESSION['customerEmail'] = $customer_email;//here session is used and value of $user_email store in $_SESSION.
+                echo "<script>window.open('customerWelcome.php','_self')</script>";
+            } else {
+                echo "<script>alert('Email or password is incorrect!')</script>";
+            }
+        }
     }
 
-    if(isset($_POST['customerRegister'])){
+    if (isset($_POST['customerRegister'])) {
         echo "<script>window.open('customerRegistration.php','_self')</script>";
     }
+
 ?>

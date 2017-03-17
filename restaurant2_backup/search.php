@@ -2,6 +2,13 @@
 $page_css = "search";
 include('header.php');
 
+if(isset($_SESSION['customerEmail'])){
+    $page_open = 'makeReservation.php';
+}
+else {
+    $page_open = 'skip.php';
+}
+
 ?>
 
 <div class="container">
@@ -33,8 +40,8 @@ include('header.php');
                             $check_date_query = mysqli_query($conn, "SELECT * FROM `reservations` WHERE `date`='$sql_date'");
                             $check_time_query = mysqli_query($conn, "SELECT * FROM `reservations` WHERE `start_time`='$sql_time'");
 
-                            $_SESSION['date'] = $sql_date;
-                            $_SESSION['time'] = $sql_time;
+                            $_SESSION['requestDate'] = $sql_date;
+                            $_SESSION['requestTime'] = $sql_time;
 
                             if(mysqli_num_rows($check_date_query) > 0) {
 
@@ -60,10 +67,11 @@ include('header.php');
                                                                                 ");
 
                                         if (mysqli_num_rows($check_reserved_tables_query) > 0) {
-                                            echo "<form action='skip.php' method='POST'><div>";
+                                            echo "<form action=$page_open method='POST'><div>";
+
                                             while($check_reserved_tables_array = mysqli_fetch_array($check_reserved_tables_query)) {
-                                              //    $total_rows = mysqli_num_rows($check_reserved_tables_query);
-                                                  $restaurant_table_id = $check_reserved_tables_array['restaurant_table_ID']; /*checking rows with ID from prev query*/
+
+                                                $restaurant_table_id = $check_reserved_tables_array['restaurant_table_ID']; /*checking rows with ID from prev query*/
 
                                                 $reservation_rows_query = mysqli_query($conn, "SELECT * FROM `reservations` INNER JOIN `restaurant_tables` 
                                                                                                                   ON restaurant_tables.restaurant_table_ID = reservations.restaurant_table_ID
@@ -79,8 +87,8 @@ include('header.php');
                                                       echo "<h1>restaurant name:" . $restaurant_name . "</h1>";
                                                       $restaurant_id = $check_reserved_tables_array['restaurant_ID'];
 
-                                                      echo "<input type='hidden' name='date' value='$sql_date'>";
-                                                      echo "<input type='hidden' name='time' value='$sql_time'>";
+                                                      echo "<input type='hidden' name='requestDate' value='$sql_date'>";
+                                                      echo "<input type='hidden' name='requestTime' value='$sql_time'>";
                                                       echo "<button type='submit' name='selected_restaurant_ID' value='$restaurant_id'>SELECT</button>";
 
                                                   } else {
@@ -104,14 +112,14 @@ include('header.php');
 
                                             if(mysqli_num_rows($check_restaurant_query) > 0) {
 
-                                                echo "<form action='skip.php' method='POST'><div>";
+                                                echo "<form action=$page_open method='POST'><div>";
                                                 while ($check_restaurant_array = mysqli_fetch_array($check_restaurant_query)) {
                                                     $restaurant_name = $check_restaurant_array['restaurant_name'];
                                                     echo "<h1>restaurant name:" . $restaurant_name . "</h1>";
                                                     $restaurant_id = $check_restaurant_array['restaurant_ID'];
 
-                                                    echo "<input type='hidden' name='date' value='$sql_date'>";
-                                                    echo "<input type='hidden' name='time' value='$sql_time'>";
+                                                    echo "<input type='hidden' name='requestDate' value='$sql_date'>";
+                                                    echo "<input type='hidden' name='requestTime' value='$sql_time'>";
                                                     echo "<button type='submit' name='selected_restaurant_ID' value='$restaurant_id'>SELECT</button>";
                                                 }
                                                 echo "</div></form>";
@@ -137,14 +145,14 @@ include('header.php');
 
                                     if(mysqli_num_rows($check_restaurant_query) > 0) {
 
-                                        echo "<form action='skip.php' method='POST'><div>";
+                                        echo "<form action=$page_open method='POST'><div>";
                                         while ($check_restaurant_array = mysqli_fetch_array($check_restaurant_query)) {
                                             $restaurant_name = $check_restaurant_array['restaurant_name'];
                                             echo "<h1>restaurant name:" . $restaurant_name . "</h1>";
                                             $restaurant_id = $check_restaurant_array['restaurant_ID'];
 
-                                            echo "<input type='hidden' name='date' value='$sql_date'>";
-                                            echo "<input type='hidden' name='time' value='$sql_time'>";
+                                            echo "<input type='hidden' name='requestDate' value='$sql_date'>";
+                                            echo "<input type='hidden' name='requestTime' value='$sql_time'>";
                                             echo "<button type='submit' name='selected_restaurant_ID' value='$restaurant_id'>SELECT</button>";
                                         }
                                         echo "</div></form>";
@@ -169,14 +177,14 @@ include('header.php');
 
                                if(mysqli_num_rows($check_restaurant_query) > 0) {
                                     echo "<h1><b>Date(s) and Time(s) are free for the following:</b></h1>";
-                                    echo "<form action='skip.php' method='POST'><div>";
+                                    echo "<form action=$page_open method='POST'><div>";
                                     while ($check_restaurant_array = mysqli_fetch_array($check_restaurant_query)) {
                                         $restaurant_name = $check_restaurant_array['restaurant_name'];
                                         echo "<h1>restaurant name:" . $restaurant_name . "</h1>";
                                         $restaurant_table_id = $check_restaurant_array['restaurant_table_ID'];
 
-                                        echo "<input type='hidden' name='date' value='$sql_date'>";
-                                        echo "<input type='hidden' name='time' value='$sql_time'>";
+                                        echo "<input type='hidden' name='requestDate' value='$sql_date'>";
+                                        echo "<input type='hidden' name='requestTime' value='$sql_time'>";
                                         echo "<button type='submit' name='selected_restaurant_ID' value='$restaurant_table_id'>SELECT</button>";
                                     }
                                     echo "</div></form>";

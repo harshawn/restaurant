@@ -2,9 +2,9 @@
 $page_css = "skip";
 include('header.php');
 
-/*if(isset($_POST['selected_restaurant_ID'])){
+if(isset($_POST['selected_restaurant_ID'])){
     $_SESSION['selected_restaurant_ID'] = $_POST['selected_restaurant_ID'];
-}*/
+}
 ?>
 
 <div class="container">

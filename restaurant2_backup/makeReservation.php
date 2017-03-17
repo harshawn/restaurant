@@ -7,43 +7,62 @@ include('header.php');
 
     <?php
 
-    if(isset($_SESSION['selected_restaurant_ID'])) {
 
-        $selected_restaurant_ID = $_SESSION['selected_restaurant_ID'];
+        if (isset($_SESSION['selected_restaurant_ID'])) {
 
-        $check_restaurant_tables_query = mysqli_query($conn, "SELECT * FROM `restaurants` 
-                                                                                    INNER JOIN `restaurant_tables` ON restaurant_tables.restaurant_ID = restaurants.restaurant_ID
-                                                                                    WHERE `restaurant_table_ID` = '$selected_restaurant_ID'                                                                                                          
-                                                                              ");
-        if(mysqli_num_rows($check_restaurant_tables_query)>0){
-            while($check_restaurant_tables_array = mysqli_fetch_array($check_restaurant_tables_query)){
-                $restaurant_name = $check_restaurant_tables_array['restaurant_name'];
-                echo "<h1>You have selected ".$restaurant_name."</h1>";
+            $selected_restaurant_ID = $_SESSION['selected_restaurant_ID'];
+
+            $check_restaurant_tables_query = mysqli_query($conn, "SELECT * FROM `restaurants` 
+                                                                                        INNER JOIN `restaurant_tables` ON restaurant_tables.restaurant_ID = restaurants.restaurant_ID
+                                                                                        WHERE `restaurant_table_ID` = '$selected_restaurant_ID'                                                                                                          
+                                                                                  ");
+            if (mysqli_num_rows($check_restaurant_tables_query) > 0) {
+                while ($check_restaurant_tables_array = mysqli_fetch_array($check_restaurant_tables_query)) {
+                    $restaurant_name = $check_restaurant_tables_array['restaurant_name'];
+                    echo "<h1>You have selected " . $restaurant_name . "</h1>";
+                }
             }
+
+            if(isset($_SESSION['customerEmail'])) {
+
+                $customer_firstname_query = mysqli_query($conn, "SELECT `customer_firstname` FROM `customers` WHERE `customer_email`='$customer_email'");
+                $customer_firstname_array = mysqli_fetch_array($customer_firstname_query);
+                $customer_firstname = $customer_firstname_array['customer_firstname'];
+
+
+                echo "Hello ".$customer_firstname." please press confirm to place your reservation";
+                echo '
+                    <div class="form-login">
+                        <form action="" method="POST">
+                            <input type="submit" name="customerConfirm" value="Confirm">
+                            <br><br>
+                        </form>
+                    </div>
+                    ';
+            }
+            else {
+                echo '
+                <div class="form-login">
+                    <form action="" method="POST">
+                    <h2>Please enter your details below, then press preview to view your reservation details</h2>
+                        <input type="text" name="customerTitle" class="form-control input-sm chat-input" placeholder="Title e.g. Mr, Mrs, Miss">
+                        <br>
+                        <input type="text" name="customerFirstName" class="form-control input-sm chat-input" placeholder="Firstname">
+                        <br>
+                        <input type="text" name="customerLastName" class="form-control input-sm chat-input" placeholder="Lastname">
+                        <br>
+                        <input type="text" name="customerEmail" class="form-control input-sm chat-input" placeholder="Email">
+                        <br>
+    
+                        <input type="submit" name="newCustomerConfirm" value="Confirm">
+                        <br><br>
+                    </form>
+                </div>
+            ';
+            }
+        } else {
+            echo "nothing is here";
         }
-
-        echo '
-            <div class="form-login">
-                <form action="" method="POST">
-                <h2>Please enter your details below, then press preview to view your reservation details</h2>
-                    <input type="text" name="customerTitle" class="form-control input-sm chat-input" placeholder="Title e.g. Mr, Mrs, Miss">
-                    <br>
-                    <input type="text" name="customerFirstName" class="form-control input-sm chat-input" placeholder="Firstname">
-                    <br>
-                    <input type="text" name="customerLastName" class="form-control input-sm chat-input" placeholder="Lastname">
-                    <br>
-                    <input type="text" name="customerEmail" class="form-control input-sm chat-input" placeholder="Email">
-                    <br>
-
-                    <input type="submit" name="newCustomerConfirm" value="Confirm">
-                    <br><br>
-                </form>
-            </div>
-        ';
-    }
-    else {
-        echo "nothing is here";
-    }
 
     ?>
 
@@ -54,6 +73,35 @@ include('footer.php');
 ?>
 
 <?php
+
+if(isset($_POST['customerConfirm'])){
+    $selected_restaurant_ID = $_SESSION['selected_restaurant_ID'];
+    $date_request = $_SESSION['requestDate'];
+    $time_request = $_SESSION['requestTime'];
+
+    $customer_email = $_SESSION['customerEmail'];
+
+    $get_customer_query = mysqli_query($conn, "SELECT `customer_ID` FROM `customers` WHERE `customer_email`='$customer_email'");
+    $get_customer_array = mysqli_fetch_array($get_customer_query);
+    $customer_ID = $get_customer_array['customer_ID'];
+
+    $current_date = date("ymd");
+    $current_time = date("His");
+
+    $reservation_number = $current_date.$current_time;
+
+    $add_reservation_customer = "INSERT INTO `reservations`(`restaurant_table_ID`, `customer_ID`, `reservation_number`, `date`, `start_time`) 
+                                              VALUES('$selected_restaurant_ID', '$customer_ID', '$reservation_number', '$date_request', '$time_request')";
+
+    if($conn->query($add_reservation_customer) == TRUE){
+        echo "<script>alert('Reserved table successfully')</script>";
+    }
+    else {
+        echo "<script>alert('Reservation unsuccessful')</script>";
+    }
+}
+
+
 if(isset($_POST['newCustomerConfirm']))
 {
     $customer_title=$_POST['customerTitle'];
@@ -81,7 +129,7 @@ if(isset($_POST['newCustomerConfirm']))
         if ($conn->query($add_customer) == TRUE) {
             $select_customer_query = mysqli_query($conn, "SELECT `customer_ID` FROM `customers` WHERE `customer_email`='$customer_email'");
             $select_customer_array = mysqli_fetch_array($select_customer_query);
-            $customer_ID = $select_customer_array['customer_ID'];
+            $new_customer_ID = $select_customer_array['customer_ID'];
 
             $current_date = date("ymd");
             $current_time = date("His");
@@ -89,7 +137,7 @@ if(isset($_POST['newCustomerConfirm']))
             $reservation_ID = $current_date.$current_time;
 
             $add_reservation = "INSERT INTO `reservations`(`reservation_ID`,`restaurant_table_ID`, `customer_ID`, `date`, `start_time`) 
-                                              VALUES('$reservation_ID','$selected_restaurant_ID', '$customer_ID', '$date_request', '$time_request')";
+                                              VALUES('$reservation_ID','$selected_restaurant_ID', '$new_customer_ID', '$date_request', '$time_request')";
 
             if($conn->query($add_reservation) == TRUE){
                 echo "<script>alert('Reserved table successfully')</script>";
