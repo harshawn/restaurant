@@ -29,7 +29,6 @@ include('header.php');
                 $customer_firstname_array = mysqli_fetch_array($customer_firstname_query);
                 $customer_firstname = $customer_firstname_array['customer_firstname'];
 
-
                 echo "Hello ".$customer_firstname." please press confirm to place your reservation";
                 echo '
                     <div class="form-login">
@@ -75,26 +74,31 @@ include('footer.php');
 <?php
 
 if(isset($_POST['customerConfirm'])){
+
     $selected_restaurant_ID = $_SESSION['selected_restaurant_ID'];
     $date_request = $_SESSION['requestDate'];
     $time_request = $_SESSION['requestTime'];
 
     $customer_email = $_SESSION['customerEmail'];
 
-    $get_customer_query = mysqli_query($conn, "SELECT `customer_ID` FROM `customers` WHERE `customer_email`='$customer_email'");
+    $get_customer_query = mysqli_query($conn, "SELECT * FROM `customers` WHERE `customer_email`='$customer_email'");
     $get_customer_array = mysqli_fetch_array($get_customer_query);
     $customer_ID = $get_customer_array['customer_ID'];
+
+    $customer_firstname = $get_customer_array['customer_firstname'];
+    $_SESSION['customer_firstname'] = $customer_firstname;
 
     $current_date = date("ymd");
     $current_time = date("His");
 
     $reservation_number = $current_date.$current_time;
-
+    $_SESSION['reservation_number'] = $reservation_number;
     $add_reservation_customer = "INSERT INTO `reservations`(`restaurant_table_ID`, `customer_ID`, `reservation_number`, `date`, `start_time`) 
                                               VALUES('$selected_restaurant_ID', '$customer_ID', '$reservation_number', '$date_request', '$time_request')";
 
     if($conn->query($add_reservation_customer) == TRUE){
         echo "<script>alert('Reserved table successfully')</script>";
+        echo "<script>window.open('confirmedReservation.php', '_self')</script>";
     }
     else {
         echo "<script>alert('Reservation unsuccessful')</script>";
@@ -134,13 +138,14 @@ if(isset($_POST['newCustomerConfirm']))
             $current_date = date("ymd");
             $current_time = date("His");
 
-            $reservation_ID = $current_date.$current_time;
-
-            $add_reservation = "INSERT INTO `reservations`(`reservation_ID`,`restaurant_table_ID`, `customer_ID`, `date`, `start_time`) 
-                                              VALUES('$reservation_ID','$selected_restaurant_ID', '$new_customer_ID', '$date_request', '$time_request')";
+            $reservation_number = $current_date.$current_time;
+            $_SESSION['reservation_number'] = $reservation_number;
+            $add_reservation = "INSERT INTO `reservations`(`restaurant_table_ID`, `customer_ID`, `reservation_number`, `date`, `start_time`) 
+                                              VALUES('$selected_restaurant_ID', '$new_customer_ID', '$reservation_number', '$date_request', '$time_request')";
 
             if($conn->query($add_reservation) == TRUE){
                 echo "<script>alert('Reserved table successfully')</script>";
+                echo "<script>window.open('confirmedReservation.php', '_self')</script>";
             }
             else {
                 echo "<script>alert('Customer added but reservation unsuccessful')</script>";

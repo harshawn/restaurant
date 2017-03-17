@@ -78,23 +78,29 @@ else {
                                                                                                                   WHERE reservations.restaurant_table_ID=$restaurant_table_id");
                                                 $total_rows = mysqli_num_rows($reservation_rows_query);
 
-                                                  $total_amount_query = mysqli_query($conn, "SELECT `table_amount` FROM `restaurant_tables` WHERE restaurant_table_ID='$restaurant_table_id'");
-                                                  $total_amount_array = mysqli_fetch_array($total_amount_query);
-                                                  $total_table_amount = $total_amount_array['table_amount'];
 
-                                                  if ($total_rows < $total_table_amount) {
-                                                      $restaurant_name = $check_reserved_tables_array['restaurant_name'];
-                                                      echo "<h1>restaurant name:" . $restaurant_name . "</h1>";
-                                                      $restaurant_id = $check_reserved_tables_array['restaurant_ID'];
 
-                                                      echo "<input type='hidden' name='requestDate' value='$sql_date'>";
-                                                      echo "<input type='hidden' name='requestTime' value='$sql_time'>";
-                                                      echo "<button type='submit' name='selected_restaurant_ID' value='$restaurant_id'>SELECT</button>";
+                                                    $total_amount_query = mysqli_query($conn, "SELECT `table_amount` FROM `restaurant_tables` WHERE restaurant_table_ID='$restaurant_table_id'");
+                                                    $total_amount_array = mysqli_fetch_array($total_amount_query);
+                                                    $total_table_amount = $total_amount_array['table_amount'];
 
-                                                  } else {
-                                                      $restaurant_name = $check_reserved_tables_array['restaurant_name'];
-                                                      echo "<h1>restaurant name:" . $restaurant_name . " is fully booked</h1>";
-                                                  }
+                                                    if ($total_rows < $total_table_amount) {
+                                                        $restaurant_name = $check_reserved_tables_array['restaurant_name'];
+                                                        echo "<h1>restaurant name:" . $restaurant_name . "</h1>";
+                                                        $restaurant_id = $check_reserved_tables_array['restaurant_ID'];
+
+                                                        echo "<input type='hidden' name='requestDate' value='$sql_date'>";
+                                                        echo "<input type='hidden' name='requestTime' value='$sql_time'>";
+                                                        echo "<button type='submit' name='selected_restaurant_ID' value='$restaurant_table_id'>SELECT</button>";
+
+                                                    } else {
+                                                        $restaurant_name = $check_reserved_tables_array['restaurant_name'];
+                                                        echo "<h1>restaurant name:" . $restaurant_name . " is fully booked</h1>";
+                                                    }
+
+
+
+
                                           }
                                           echo "</div></form>";
                                         }
@@ -118,9 +124,11 @@ else {
                                                     echo "<h1>restaurant name:" . $restaurant_name . "</h1>";
                                                     $restaurant_id = $check_restaurant_array['restaurant_ID'];
 
+                                                    $restaurant_table_id = $check_restaurant_array['restaurant_table_ID'];
+
                                                     echo "<input type='hidden' name='requestDate' value='$sql_date'>";
                                                     echo "<input type='hidden' name='requestTime' value='$sql_time'>";
-                                                    echo "<button type='submit' name='selected_restaurant_ID' value='$restaurant_id'>SELECT</button>";
+                                                    echo "<button type='submit' name='selected_restaurant_ID' value='$restaurant_table_id'>SELECT</button>";
                                                 }
                                                 echo "</div></form>";
                                             }
@@ -153,7 +161,7 @@ else {
 
                                             echo "<input type='hidden' name='requestDate' value='$sql_date'>";
                                             echo "<input type='hidden' name='requestTime' value='$sql_time'>";
-                                            echo "<button type='submit' name='selected_restaurant_ID' value='$restaurant_id'>SELECT</button>";
+                                            echo "<button type='submit' name='selected_restaurant_ID' value='$restaurant_table_id'>SELECT</button>";
                                         }
                                         echo "</div></form>";
                                     }
