@@ -15,10 +15,26 @@
     <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
         <ul class="nav navbar-nav">
             <li><a id="page-links" href="home.php">Home</a></li>
-            <li><a id="page-links" href="ownerLogin.php">Owner Login</a></li>
+            <!--<li><a id="page-links" href="ownerLogin.php">Owner Login</a></li> -->
+            <?php
+            if(isset($_SESSION['ownerEmail'])){
+                $owner_email=$_SESSION['ownerEmail'];
+                $check_owner="SELECT owner_firstname FROM `restaurant_owner` WHERE owner_email='$owner_email'";
+                $run=mysqli_query($conn,$check_owner);
+                $run_array = mysqli_fetch_array($run);
+                $owner_firstname = $run_array['owner_firstname'];
+
+                echo "<li><a id='page-links' href='ownerWelcome.php'>View Account</a></li>";
+                echo "<li><a id='page-links' href='ownerLogout.php'>Not ".$owner_firstname."? LOGOUT</a></li>";
+            }
+            else {
+                echo "<li><a id='page-links' href='ownerLogin.php'>Restauant Owner Login</a></li>";
+            }
+            ?>
+
             <li><a id="page-links" href="search.php">SEARCH</a></li>
             <!-- <li><a id="page-links" href="customerLogin.php">Customer Login</a></li> -->
-            <li><a id="page-links" href="help.php">Help</a></li>
+
 
             <?php
             if(isset($_SESSION['customerEmail'])){
@@ -35,6 +51,8 @@
                 echo "<li><a id='page-links' href='customerLogin.php'>Customer Login</a></li>";
             }
             ?>
+
+            <li><a id="page-links" href="help.php">Help</a></li>
 
         </ul>
     </div>

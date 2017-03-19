@@ -1,5 +1,6 @@
 <?php
-session_destroy();
+/*session_destroy();*/
+unset($_SESSION['customerEmail']);
 header('Location: customerLogin.php');
 exit;
 ?>

@@ -12,7 +12,7 @@ include('header.php');
                     <br>
                     <input type="text" name="ownerPassword" class="form-control input-sm chat-input" placeholder="Password">
                     <br>
-                    <input type="submit" name="Login" value="Login">
+                    <input type="submit" name="Login" value="Login"> <input type="submit" name="customerRegister" value="Register">
                     <br><br>
                 </form>
             </div>
