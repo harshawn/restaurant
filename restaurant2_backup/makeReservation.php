@@ -6,7 +6,9 @@ include('header.php');
 <div class="container">
 
     <?php
-
+    if(isset($_SESSION['customerEmail'])) {
+        $_SESSION['selected_restaurant_ID'] = $_POST['selected_restaurant_ID'];
+    }
 
         if (isset($_SESSION['selected_restaurant_ID'])) {
 
@@ -78,6 +80,7 @@ if(isset($_POST['customerConfirm'])){
     $selected_restaurant_ID = $_SESSION['selected_restaurant_ID'];
     $date_request = $_SESSION['requestDate'];
     $time_request = $_SESSION['requestTime'];
+    $party_size = $_SESSION['restaurant_table_size'];
 
     $customer_email = $_SESSION['customerEmail'];
 
@@ -93,8 +96,8 @@ if(isset($_POST['customerConfirm'])){
 
     $reservation_number = $current_date.$current_time;
     $_SESSION['reservation_number'] = $reservation_number;
-    $add_reservation_customer = "INSERT INTO `reservations`(`restaurant_table_ID`, `customer_ID`, `reservation_number`, `date`, `start_time`) 
-                                              VALUES('$selected_restaurant_ID', '$customer_ID', '$reservation_number', '$date_request', '$time_request')";
+    $add_reservation_customer = "INSERT INTO `reservations`(`restaurant_table_ID`, `customer_ID`, `reservation_number`, `party_size`, `date`, `start_time`) 
+                                              VALUES('$selected_restaurant_ID', '$customer_ID', '$reservation_number', '$party_size', '$date_request', '$time_request')";
 
     if($conn->query($add_reservation_customer) == TRUE){
         echo "<script>alert('Reserved table successfully')</script>";
@@ -116,6 +119,7 @@ if(isset($_POST['newCustomerConfirm']))
     $selected_restaurant_ID = $_SESSION['selected_restaurant_ID'];
     $date_request = $_SESSION['date'];
     $time_request = $_SESSION['time'];
+    $party_size = $_SESSION['restaurant_table_size'];
 
     $check_email="SELECT * FROM `customers` WHERE customer_email='$customer_email'";
 
@@ -140,8 +144,8 @@ if(isset($_POST['newCustomerConfirm']))
 
             $reservation_number = $current_date.$current_time;
             $_SESSION['reservation_number'] = $reservation_number;
-            $add_reservation = "INSERT INTO `reservations`(`restaurant_table_ID`, `customer_ID`, `reservation_number`, `date`, `start_time`) 
-                                              VALUES('$selected_restaurant_ID', '$new_customer_ID', '$reservation_number', '$date_request', '$time_request')";
+            $add_reservation = "INSERT INTO `reservations`(`restaurant_table_ID`, `customer_ID`, `reservation_number`, `party_size`, `date`, `start_time`) 
+                                              VALUES('$selected_restaurant_ID', '$new_customer_ID', '$reservation_number', '$party_size', '$date_request', '$time_request')";
 
             if($conn->query($add_reservation) == TRUE){
                 echo "<script>alert('Reserved table successfully')</script>";

@@ -34,7 +34,7 @@ include('footer.php');
         $customer_email = $_POST['customerEmail'];
         $customer_pass = $_POST['customerPassword'];
 
-        $check_customer = "SELECT * FROM `customers` WHERE customer_email='$customer_email'AND customer_password='$customer_pass'";
+        $check_customer = "SELECT * FROM `customers` WHERE customer_email='$customer_email' AND customer_password='$customer_pass'";
 
         $run = mysqli_query($conn, $check_customer);
 

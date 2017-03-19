@@ -28,6 +28,8 @@ else {
                         if (isset($_GET['searchDate']) && !empty($_GET['searchDate'])) {
 
                             $restaurant_table_size = $_GET['restaurantTableSize'];
+                            $_SESSION['restaurant_table_size'] = $restaurant_table_size;
+
                             $restaurant_city = $_GET['restaurantCity'];
                             $restaurant_cuisine = $_GET['restaurantCuisine'];
 
@@ -157,7 +159,7 @@ else {
                                         while ($check_restaurant_array = mysqli_fetch_array($check_restaurant_query)) {
                                             $restaurant_name = $check_restaurant_array['restaurant_name'];
                                             echo "<h1>restaurant name:" . $restaurant_name . "</h1>";
-                                            $restaurant_id = $check_restaurant_array['restaurant_ID'];
+                                            $restaurant_table_id = $check_restaurant_array['restaurant_table_ID'];
 
                                             echo "<input type='hidden' name='requestDate' value='$sql_date'>";
                                             echo "<input type='hidden' name='requestTime' value='$sql_time'>";

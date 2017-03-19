@@ -28,7 +28,7 @@
                 $run_array = mysqli_fetch_array($run);
                 $customer_name = $run_array['customer_firstname'];
 
-                echo "<li><a id='page-links' href='customerViewAccount.php'>View Account</a></li>";
+                echo "<li><a id='page-links' href='customerWelcome.php'>View Account</a></li>";
                 echo "<li><a id='page-links' href='customerLogout.php'>Not ".$customer_name."? LOGOUT</a></li>";
             }
             else {
