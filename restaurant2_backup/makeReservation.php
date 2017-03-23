@@ -52,7 +52,7 @@ include('header.php');
                         <br>
                         <input type="text" name="customerLastName" class="form-control input-sm chat-input" placeholder="Lastname">
                         <br>
-                        <input type="text" name="customerEmail" class="form-control input-sm chat-input" placeholder="Email">
+                        <input type="text" name="newCustomerEmail" class="form-control input-sm chat-input" placeholder="Email">
                         <br>
     
                         <input type="submit" name="newCustomerConfirm" value="Confirm">
@@ -61,6 +61,7 @@ include('header.php');
                 </div>
             ';
             }
+
         } else {
             echo "nothing is here";
         }
@@ -94,6 +95,14 @@ if(isset($_POST['customerConfirm'])){
     $current_date = date("ymd");
     $current_time = date("His");
 
+    $turnover_time_query = mysqli_query($conn, "SELECT `turnover_time` FROM `restaurant_tables` WHERE `restaurant_table_id`='$selected_restaurant_ID'");
+    $turnover_time_array = mysqli_fetch_array($turnover_time_query);
+    $turnover_time = $turnover_time_array['turnover_time'];
+
+    $end_time = date("H:i", strtotime($turnover_time + $time_request));
+    echo "<script>alert($end_time)</script>";
+
+
     $reservation_number = $current_date.$current_time;
     $_SESSION['reservation_number'] = $reservation_number;
     $add_reservation_customer = "INSERT INTO `reservations`(`restaurant_table_ID`, `customer_ID`, `reservation_number`, `party_size`, `date`, `start_time`) 
@@ -114,11 +123,11 @@ if(isset($_POST['newCustomerConfirm']))
     $customer_title=$_POST['customerTitle'];
     $customer_firstname=$_POST['customerFirstName'];
     $customer_lastname=$_POST['customerLastName'];
-    $customer_email=$_POST['customerEmail'];
+    $customer_email=$_POST['newCustomerEmail'];
 
     $selected_restaurant_ID = $_SESSION['selected_restaurant_ID'];
-    $date_request = $_SESSION['date'];
-    $time_request = $_SESSION['time'];
+    $date_request = $_SESSION['requestDate'];
+    $time_request = $_SESSION['requestTime'];
     $party_size = $_SESSION['restaurant_table_size'];
 
     $check_email="SELECT * FROM `customers` WHERE customer_email='$customer_email'";

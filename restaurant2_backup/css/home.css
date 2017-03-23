@@ -9,12 +9,25 @@ html, body {
 }
 
 body {
-    background: linear-gradient(to bottom, #f4a1a1 50%, #e6e6e6 50%);
-    /*  background-image: url('../img/background.png');
+
+
+/*    background: linear-gradient(to bottom, #f4a1a1 50%, #e6e6e6 50%);
+    !*  background-image: url('../img/background.png');
       background-repeat: repeat-x;
     background-image: linear-gradient(to bottom, #f4a1a1 50%, #e6e6e6 50%);
-    background-size: cover; */
+    background-size: cover; *!
+    background-repeat: no-repeat;*/
+
+    background: linear-gradient(to bottom, #f4a1a1 50%, #e6e6e6 50%);
+     background-image: url("../img/background.png"); background-repeat:  repeat-x;
+       background-image: linear-gradient(to bottom, #f4a1a1 50%, #e6e6e6 50%);
+      background-size: cover;
     background-repeat: no-repeat;
+
+  /*  background: linear-gradient(to bottom, #f4a1a1 50%, #e6e6e6 50%);
+    background-image: url("../img/background.png");
+    background-repeat: repeat-x;
+    background-image: url("../img/background.png"), linear-gradient(to bottom, #f4a1a1 50%, #e6e6e6 50%);*/
 }
 
 .container {
@@ -22,8 +35,7 @@ body {
     border-radius: 1em;
     padding: 2em;
     width: 30em;
-    height: 70em;
-
+    text-align: center;
 }
 
 #home_header {
@@ -32,4 +44,15 @@ body {
 
 div.container form.btn-default {
     margin-top: 20px;
+}
+
+#date_time {
+    text-align: center;
+
+}
+
+#home_go {
+    padding: 2em;
+    text-align: center;
+    font-weight: bold;
 }

@@ -3,6 +3,7 @@ $page_css = "customerLogin";
 require_once('header.php');
 /* USED THIS AS HELP ::::::::::::::::::::::::::::::::::::::::::::<<<<<<<<<<<<
  * http://www.c-sharpcorner.com/uploadfile/9582c9/script-for-login-logout-and-view-using-php-mysql-and-boots/
+ *
  */
 ?>
         
@@ -13,14 +14,15 @@ require_once('header.php');
                 <form action="" method="POST">
                     <input type="text" name="customerEmail" class="form-control input-sm chat-input" placeholder="Email">
                     <br>
-                    <input type="text" name="customerPassword" class="form-control input-sm chat-input" placeholder="Password">
+                    <input type="password" name="customerPassword" class="form-control input-sm chat-input" placeholder="Password">
                     <br>
                     <input type="submit" name="Login" value="Login"> <input type="submit" name="customerRegister" value="Register">
                     <br><br>
                 </form>
             </div>
-            
-            
+            <a href="customerForgotPassword.php"><small>Forgot Password?</small></a>
+            <br><br>
+
         </div>
                 
 <?php

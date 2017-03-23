@@ -26,6 +26,7 @@ include('header.php');
         echo "<h1>Hi ".$customer_firstname.", </h1><h1>Here is your reservation number: <b>".$format_reservation_number."</b></h1>
               <h1>Please print or save this, to show on arrival at:</h1><h1>".$restaurant_name." for ".$format_time."</h1>";
 
+        unset($_SESSION['selected_restaurant_ID']);
     }
 
     else {

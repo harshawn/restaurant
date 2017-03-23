@@ -17,6 +17,7 @@ else {
         <div class="container col-lg-3 form-group">
             <p id="modify_search_box">
                 Modify/edit Search box
+
             </p>
         </div>
 
@@ -55,20 +56,66 @@ else {
                                     need to check time between and end time, like is 09:00am between any start and end time? no?
                                     show restaurant-table-id
                                 */
+
+                                if($restaurant_city == "Any" && $restaurant_cuisine == "Any"){
+                                    $check_reserved_tables_query = mysqli_query($conn, "SELECT * FROM `restaurants` 
+                                                                                INNER JOIN `restaurant_tables` ON restaurant_tables.restaurant_ID = restaurants.restaurant_ID                                                                                
+                                                                                INNER JOIN `table_size` ON table_size.size_ID = restaurant_tables.size_ID
+                                                                                WHERE (('$restaurant_table_size' BETWEEN `minimum` AND `maximum`) 
+                                                                                                                      OR `minimum`<='$restaurant_table_size' OR `maximum`>='$restaurant_table_size')
+                                                                                GROUP BY restaurants.restaurant_name
+                                                                                ");
+                                }
+
+                                elseif($restaurant_city == "Any"){
+                                    $check_reserved_tables_query = mysqli_query($conn, "SELECT * FROM `restaurants`                                                                                 
+                                                                                INNER JOIN `restaurant_cuisine` ON restaurant_cuisine.restaurant_ID = restaurants.restaurant_ID
+                                                                                INNER JOIN `cuisine` ON cuisine.cuisine_ID = restaurant_cuisine.cuisine_ID
+                                                                                INNER JOIN `restaurant_tables` ON restaurant_tables.restaurant_ID = restaurants.restaurant_ID                                                                                
+                                                                                INNER JOIN `table_size` ON table_size.size_ID = restaurant_tables.size_ID
+                                                                                WHERE `cuisine_name`='$restaurant_cuisine'
+                                                                                                       AND (('$restaurant_table_size' BETWEEN `minimum` AND `maximum`) 
+                                                                                                                      OR `minimum`<='$restaurant_table_size' OR `maximum`>='$restaurant_table_size')
+                                                                                GROUP BY restaurants.restaurant_name
+                                                                                ");
+                                }
+
+                                elseif($restaurant_cuisine == "Any"){
+                                    $check_reserved_tables_query = mysqli_query($conn, "SELECT * FROM `restaurants` 
+                                                                                INNER JOIN `location` ON restaurants.location_ID = location.location_ID                                                                              
+                                                                                INNER JOIN `restaurant_tables` ON restaurant_tables.restaurant_ID = restaurants.restaurant_ID                                                                                
+                                                                                INNER JOIN `table_size` ON table_size.size_ID = restaurant_tables.size_ID
+                                                                                WHERE `city`='$restaurant_city'
+                                                                                                       AND (('$restaurant_table_size' BETWEEN `minimum` AND `maximum`) 
+                                                                                                                      OR `minimum`<='$restaurant_table_size' OR `maximum`>='$restaurant_table_size')
+                                                                                GROUP BY restaurants.restaurant_name
+                                                                                ");
+                                }
+
+                                else {
                                     $check_reserved_tables_query = mysqli_query($conn, "SELECT * FROM `restaurants` 
                                                                                 INNER JOIN `location` ON restaurants.location_ID = location.location_ID
                                                                                 INNER JOIN `restaurant_cuisine` ON restaurant_cuisine.restaurant_ID = restaurants.restaurant_ID
                                                                                 INNER JOIN `cuisine` ON cuisine.cuisine_ID = restaurant_cuisine.cuisine_ID
-                                                                                INNER JOIN `restaurant_tables` ON restaurant_tables.restaurant_ID = restaurants.restaurant_ID
-                                                                                INNER JOIN `reservations` ON reservations.restaurant_table_ID = restaurant_tables.restaurant_table_ID
+                                                                                INNER JOIN `restaurant_tables` ON restaurant_tables.restaurant_ID = restaurants.restaurant_ID                                                                               
                                                                                 INNER JOIN `table_size` ON table_size.size_ID = restaurant_tables.size_ID
                                                                                 WHERE `city`='$restaurant_city' AND `cuisine_name`='$restaurant_cuisine'
-                                                                                                      AND `date`='$sql_date' AND `start_time`='$sql_time' 
-                                                                                                              AND ('$restaurant_table_size' BETWEEN `minimum` AND `maximum`)
+                                                                                                       AND (('$restaurant_table_size' BETWEEN `minimum` AND `maximum`) 
+                                                                                                                      OR `minimum`<='$restaurant_table_size' OR `maximum`>='$restaurant_table_size')
                                                                                 GROUP BY restaurants.restaurant_name
                                                                                 ");
+                                }
 
-                                        if (mysqli_num_rows($check_reserved_tables_query) > 0) {
+                                        /*
+                                         * then check others where "request_size" id is BETWEEN max and min (restaurant_id is same)
+                                         * to then compare on reservations again and check amount of these,
+                                         * if free then available and book
+                                         *
+                                         * CHECK restaurant_table_id join size_ID where size_ID = "search table"
+                                         * 
+                                         */
+
+                                    if (mysqli_num_rows($check_reserved_tables_query) > 0) {
                                             echo "<form action=$page_open method='POST'><div>";
 
                                             while($check_reserved_tables_array = mysqli_fetch_array($check_reserved_tables_query)) {
@@ -79,7 +126,6 @@ else {
                                                                                                                   ON restaurant_tables.restaurant_table_ID = reservations.restaurant_table_ID
                                                                                                                   WHERE reservations.restaurant_table_ID=$restaurant_table_id");
                                                 $total_rows = mysqli_num_rows($reservation_rows_query);
-
 
 
                                                     $total_amount_query = mysqli_query($conn, "SELECT `table_amount` FROM `restaurant_tables` WHERE restaurant_table_ID='$restaurant_table_id'");
@@ -99,9 +145,6 @@ else {
                                                         $restaurant_name = $check_reserved_tables_array['restaurant_name'];
                                                         echo "<h1>restaurant name:" . $restaurant_name . " is fully booked</h1>";
                                                     }
-
-
-
 
                                           }
                                           echo "</div></form>";
@@ -142,16 +185,54 @@ else {
                                 }
                                 else {
                                     echo "<h1><b>Time(s) is free at the following:</b></h1>";
-                                    $check_restaurant_query = mysqli_query($conn, "SELECT * FROM `restaurants` 
-                                                                            INNER JOIN `location` ON restaurants.location_ID = location.location_ID
-                                                                            INNER JOIN `restaurant_cuisine` ON restaurant_cuisine.restaurant_ID = restaurants.restaurant_ID
-                                                                            INNER JOIN `cuisine` ON cuisine.cuisine_ID = restaurant_cuisine.cuisine_ID
-                                                                            INNER JOIN `restaurant_tables` ON restaurant_tables.restaurant_ID = restaurants.restaurant_ID
-                                                                            INNER JOIN `table_size` ON table_size.size_ID = restaurant_tables.size_ID
-                                                                            WHERE `city`='$restaurant_city' AND `cuisine_name`='$restaurant_cuisine'
-                                                                                                          AND ('$restaurant_table_size' BETWEEN `minimum` AND `maximum`)
-                                                                            GROUP BY restaurants.restaurant_name
-                                                                      ");
+
+                                    if($restaurant_city == "Any" && $restaurant_cuisine == "Any"){
+                                        $check_restaurant_query = mysqli_query($conn, "SELECT * FROM `restaurants` 
+                                                                                INNER JOIN `restaurant_tables` ON restaurant_tables.restaurant_ID = restaurants.restaurant_ID                                                                                
+                                                                                INNER JOIN `table_size` ON table_size.size_ID = restaurant_tables.size_ID
+                                                                                WHERE (('$restaurant_table_size' BETWEEN `minimum` AND `maximum`) 
+                                                                                                                      OR `minimum`<='$restaurant_table_size' OR `maximum`>='$restaurant_table_size')
+                                                                                GROUP BY restaurants.restaurant_name
+                                                                                ");
+                                    }
+
+                                    elseif($restaurant_city == "Any"){
+                                        $check_restaurant_query = mysqli_query($conn, "SELECT * FROM `restaurants`                                                                                 
+                                                                                INNER JOIN `restaurant_cuisine` ON restaurant_cuisine.restaurant_ID = restaurants.restaurant_ID
+                                                                                INNER JOIN `cuisine` ON cuisine.cuisine_ID = restaurant_cuisine.cuisine_ID
+                                                                                INNER JOIN `restaurant_tables` ON restaurant_tables.restaurant_ID = restaurants.restaurant_ID                                                                                
+                                                                                INNER JOIN `table_size` ON table_size.size_ID = restaurant_tables.size_ID
+                                                                                WHERE `cuisine_name`='$restaurant_cuisine'
+                                                                                                       AND (('$restaurant_table_size' BETWEEN `minimum` AND `maximum`) 
+                                                                                                                      OR `minimum`<='$restaurant_table_size' OR `maximum`>='$restaurant_table_size')
+                                                                                GROUP BY restaurants.restaurant_name
+                                                                                ");
+                                    }
+
+                                    elseif($restaurant_cuisine == "Any") {
+                                        $check_restaurant_query = mysqli_query($conn, "SELECT * FROM `restaurants` 
+                                                                                INNER JOIN `location` ON restaurants.location_ID = location.location_ID                                                                              
+                                                                                INNER JOIN `restaurant_tables` ON restaurant_tables.restaurant_ID = restaurants.restaurant_ID                                                                                
+                                                                                INNER JOIN `table_size` ON table_size.size_ID = restaurant_tables.size_ID
+                                                                                WHERE `city`='$restaurant_city'
+                                                                                                       AND (('$restaurant_table_size' BETWEEN `minimum` AND `maximum`) 
+                                                                                                                      OR `minimum`<='$restaurant_table_size' OR `maximum`>='$restaurant_table_size')
+                                                                                GROUP BY restaurants.restaurant_name
+                                                                                ");
+                                    }
+
+                                    else {
+                                        $check_restaurant_query = mysqli_query($conn, "SELECT * FROM `restaurants` 
+                                                                    INNER JOIN `location` ON restaurants.location_ID = location.location_ID
+                                                                    INNER JOIN `restaurant_cuisine` ON restaurant_cuisine.restaurant_ID = restaurants.restaurant_ID
+                                                                    INNER JOIN `cuisine` ON cuisine.cuisine_ID = restaurant_cuisine.cuisine_ID
+                                                                    INNER JOIN `restaurant_tables` ON restaurant_tables.restaurant_ID = restaurants.restaurant_ID
+                                                                    INNER JOIN `table_size` ON table_size.size_ID = restaurant_tables.size_ID
+                                                                    WHERE `city`='$restaurant_city' AND `cuisine_name`='$restaurant_cuisine'
+                                                                                                  AND ('$restaurant_table_size' BETWEEN `minimum` AND `maximum`)
+                                                                    GROUP BY restaurants.restaurant_name
+                                                              ");
+                                    }
 
                                     if(mysqli_num_rows($check_restaurant_query) > 0) {
 
@@ -174,7 +255,42 @@ else {
 
                             }
                             else {
-                               $check_restaurant_query = mysqli_query($conn, "SELECT * FROM `restaurants` 
+                                if($restaurant_city == "Any" && $restaurant_cuisine == "Any"){
+                                    $check_restaurant_query = mysqli_query($conn, "SELECT * FROM `restaurants` 
+                                                                                INNER JOIN `restaurant_tables` ON restaurant_tables.restaurant_ID = restaurants.restaurant_ID                                                                                
+                                                                                INNER JOIN `table_size` ON table_size.size_ID = restaurant_tables.size_ID
+                                                                                WHERE (('$restaurant_table_size' BETWEEN `minimum` AND `maximum`) 
+                                                                                                                      OR `minimum`<='$restaurant_table_size' OR `maximum`>='$restaurant_table_size')
+                                                                                GROUP BY restaurants.restaurant_name
+                                                                                ");
+                                }
+
+                                elseif($restaurant_city == "Any"){
+                                    $check_restaurant_query = mysqli_query($conn, "SELECT * FROM `restaurants`                                                                                 
+                                                                                INNER JOIN `restaurant_cuisine` ON restaurant_cuisine.restaurant_ID = restaurants.restaurant_ID
+                                                                                INNER JOIN `cuisine` ON cuisine.cuisine_ID = restaurant_cuisine.cuisine_ID
+                                                                                INNER JOIN `restaurant_tables` ON restaurant_tables.restaurant_ID = restaurants.restaurant_ID                                                                                
+                                                                                INNER JOIN `table_size` ON table_size.size_ID = restaurant_tables.size_ID
+                                                                                WHERE `cuisine_name`='$restaurant_cuisine'
+                                                                                                       AND (('$restaurant_table_size' BETWEEN `minimum` AND `maximum`) 
+                                                                                                                      OR `minimum`<='$restaurant_table_size' OR `maximum`>='$restaurant_table_size')
+                                                                                GROUP BY restaurants.restaurant_name
+                                                                                ");
+                                }
+
+                                elseif($restaurant_cuisine == "Any") {
+                                    $check_restaurant_query = mysqli_query($conn, "SELECT * FROM `restaurants` 
+                                                                                INNER JOIN `location` ON restaurants.location_ID = location.location_ID                                                                              
+                                                                                INNER JOIN `restaurant_tables` ON restaurant_tables.restaurant_ID = restaurants.restaurant_ID                                                                                
+                                                                                INNER JOIN `table_size` ON table_size.size_ID = restaurant_tables.size_ID
+                                                                                WHERE `city`='$restaurant_city'
+                                                                                                       AND (('$restaurant_table_size' BETWEEN `minimum` AND `maximum`) 
+                                                                                                                      OR `minimum`<='$restaurant_table_size' OR `maximum`>='$restaurant_table_size')
+                                                                                GROUP BY restaurants.restaurant_name
+                                                                                ");
+                                }
+                                else {
+                                    $check_restaurant_query = mysqli_query($conn, "SELECT * FROM `restaurants` 
                                                                             INNER JOIN `location` ON restaurants.location_ID = location.location_ID
                                                                             INNER JOIN `restaurant_cuisine` ON restaurant_cuisine.restaurant_ID = restaurants.restaurant_ID
                                                                             INNER JOIN `cuisine` ON cuisine.cuisine_ID = restaurant_cuisine.cuisine_ID
@@ -184,6 +300,7 @@ else {
                                                                                                           AND ('$restaurant_table_size' BETWEEN `minimum` AND `maximum`)
                                                                             GROUP BY restaurants.restaurant_name
                                                                       ");
+                                }
 
                                if(mysqli_num_rows($check_restaurant_query) > 0) {
                                     echo "<h1><b>Date(s) and Time(s) are free for the following:</b></h1>";
