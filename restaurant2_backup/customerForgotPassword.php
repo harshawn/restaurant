@@ -47,7 +47,7 @@ include('footer.php');
             $mail->Port = 587;                                    // TCP port to connect to
             $mail->isHTML(true);                                  // Set email format to HTML
             $mail->Username = 'freetables.noreply@gmail.com';                 // SMTP username
-            $mail->Password = 'p13232291';                           // SMTP password
+            $mail->Password = '';                           // SMTP password
             $mail->SMTPSecure = 'tls';                            // Enable TLS encryption, `ssl` also accepted
             $mail->setFrom('no-reply@freetables.com', 'freetables-noreply');
             $mail->addAddress($customer_email);     // Add a recipient
